@@ -1,17 +1,17 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native';
 import Icons from '@expo/vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
 import Animated, { color } from 'react-native-reanimated';
+import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
+
+
 
 const CustomBottomTabs = (props) => {
-  const { colors } = useTheme();
   return (
-    <SafeAreaView edges={['bottom']} style={[{ backgroundColor: colors.card}, styles.bottomTabs]}>
-      <View
-        style={styles.container}
-      >
+    <SafeAreaView edges={['bottom']} style={styles.bottomTab}>
+      <View style={styles.container}>
         {props.state.routes.map((route, i) => {
           const isActive = i == props.state.index;
           return <TabItem key={i} isActive={isActive} routeName={route.name} navigation={props.navigation} />;
@@ -31,10 +31,7 @@ const TabItem = ({ routeName, isActive, navigation }) => {
   };
 
   return (
-    <Pressable
-      onPress={onTap}
-      style={styles.tabButton}
-    >
+    <Pressable onPress={onTap} style={styles.tabButton}>
       <Animated.View style={[{ backgroundColor: isActive ? '#f1f9ed' : '#fafafa' }, styles.tabIconContainer]}>
         <Icons
           name={
@@ -47,22 +44,31 @@ const TabItem = ({ routeName, isActive, navigation }) => {
               : routeName === 'PROFILE'
               ? 'person'
               : ''
-              //assignment-turned-in && article
+            //assignment-turned-in && article
           }
-          size={24}
+          size={scale(20)}
           color={isActive ? '#6eb943' : colors.text}
           style={{
             opacity: isActive ? 1 : 0.5,
           }}
         />
       </Animated.View>
-      <Text style={[{ color: colors.text }, styles.tabLabel, isActive ? colors.primary : colors.text]}>{routeName}</Text>
+      <Text style={[{ color: colors.text }, styles.tabLabel, isActive ? colors.primary : colors.text]}>
+        {routeName}
+      </Text>
     </Pressable>
   );
 };
-const styles = StyleSheet.create({
-  bottomTabs: {
+const styles = ScaledSheet.create({
+  bottomTab: { backgroundColor: 'transparent', position: 'absolute', left: '0@s', bottom: '-8@s', right: '0@s' },
+
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    // paddingHorizontal: 10,
     borderRadius: 20,
+    paddingVertical: '5@s',
     shadowColor: 'black',
     shadowOpacity: 0.2,
     shadowOffset: {
@@ -71,24 +77,19 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 10,
     elevation: 8,
-  },
-
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
+    marginHorizontal: '15@s',
   },
 
   tabButton: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: '8@s',
   },
 
   tabIconContainer: {
-    width: 40,
-    height: 40,
+    width: '35@s',
+    height: '35@s',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
@@ -96,9 +97,7 @@ const styles = StyleSheet.create({
 
   tabLabel: {
     marginTop: 5,
-    fontSize: 12,
-    fontWeight: '600',
-    fontFamily: 'Montserrat'
+    fontSize: scale(9),
+    fontFamily: 'Montserrat',
   },
 });
-

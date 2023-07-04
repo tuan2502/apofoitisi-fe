@@ -1,51 +1,43 @@
-import { View } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from 'screens/HomeScreen';
-import Icons from '@expo/vector-icons/MaterialIcons';
 import CustomBottomTabs from 'components/CustomBottomTabs';
 import ProfileScreen from 'screens/Profile/ProfileScreen';
+import { Text } from '@rneui/base';
+import { StyleSheet, View } from 'react-native';
 
 const TabsStack = createBottomTabNavigator();
 
 const TabsNavigator = () => {
   return (
-    <TabsStack.Navigator screenOptions={{ tabBarShowLabel: false }} tabBar={(props) => <CustomBottomTabs {...props} />}>
+    <TabsStack.Navigator sceneContainerStyle={{paddingBottom: 70}} screenOptions={{ tabBarShowLabel: false }} tabBar={(props) => <CustomBottomTabs {...props} />}>
       <TabsStack.Screen
         name="JOBS"
         component={HomeScreen}
         options={{
           headerShown: false,
-          tabBarIcon(props) {
-            return <Icons name="home" {...props} />;
-          },
         }}
       />
       <TabsStack.Screen
         name="PROPOSALS"
         component={Example}
-        options={{
-          tabBarIcon(props) {
-            return <Icons name="shopping-cart" {...props} />;
-          },
-        }}
       />
       <TabsStack.Screen
         name="NOTIFICATIONS"
         component={Example}
-        options={{
-          tabBarIcon(props) {
-            return <Icons name="account-balance-wallet" {...props} />;
-          },
-        }}
       />
       <TabsStack.Screen
         name="PROFILE"
         component={ProfileScreen}
         options={{
-          tabBarIcon(props) {
-            return <Icons name="person" {...props} />;
-          },
+          headerStyle: styles.headerStyle,
+
+          headerTitle: () => (
+            <View style={styles.headerTitleView}>
+              <Text style={styles.headerTitleLabel}>Earnings Available:</Text>
+              <Text style={styles.headerTitleCost}><Text style={styles.headerTitleSign}>$</Text>3,289</Text>
+            </View>
+          ),
         }}
       />
     </TabsStack.Navigator>
@@ -53,6 +45,29 @@ const TabsNavigator = () => {
 };
 
 export default TabsNavigator;
+
+
+const styles = StyleSheet.create({
+  headerStyle: {
+    backgroundColor: '#6eb943',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+
+  headerTitleView: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 18,
+  },
+
+  headerTitleLabel: { fontWeight: 'bold', fontSize: 12, fontFamily: 'Montserrat-Bold' },
+
+  headerTitleCost: { fontWeight: 'bold', fontFamily: 'Montserrat-Bold', fontSize: 18, color: '#FFFFFF' },
+
+  headerTitleSign: { fontSize: 14, color: '#C9F9AE' },
+});
 
 const Example = () => {
   return <View />;
